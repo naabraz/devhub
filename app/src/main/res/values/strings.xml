@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dev Hub</string>
+    <string name="user_image_content_description">User avatar</string>
 </resources>
