@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nataliabraz.devhub.ui.theme.DevHubTheme
@@ -70,58 +71,68 @@ fun PersonInfo(name: String, userId: String, bio: String) {
             boxHeight
         }
 
-        Box(
-            Modifier
-                .fillMaxWidth()
-                .background(
-                    Color(0xFF2d333b),
-                    shape = RoundedCornerShape(
-                        bottomStart = 16.dp,
-                        bottomEnd = 16.dp
-                    )
-                )
-                .height(boxHeight)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.user_avatar),
-                contentDescription = stringResource(id = R.string.user_image_content_description),
-                Modifier
-                    .offset(y = imageHeight / 2)
-                    .size(imageHeight)
-                    .align(Alignment.BottomCenter)
-                    .clip(CircleShape),
-            )
-        }
+        Header(boxHeight, imageHeight)
 
         Spacer(Modifier.height(imageHeight / 2))
 
-        Column(
+        Profile(name, userId, bio)
+    }
+}
+
+@Composable
+fun Header(boxHeight: Dp, imageHeight: Dp) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .background(
+                Color(0xFF2d333b),
+                shape = RoundedCornerShape(
+                    bottomStart = 16.dp,
+                    bottomEnd = 16.dp
+                )
+            )
+            .height(boxHeight)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.user_avatar),
+            contentDescription = stringResource(id = R.string.user_image_content_description),
             Modifier
-                .padding(8.dp)
+                .offset(y = imageHeight / 2)
+                .size(imageHeight)
+                .align(Alignment.BottomCenter)
+                .clip(CircleShape),
+        )
+    }
+}
+
+@Composable
+fun Profile(name: String, userId: String, bio: String) {
+    Column(
+        Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            name,
+            fontSize = 32.sp
+        )
+        Text(
+            userId,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            bio,
+            Modifier
+                .padding(
+                    start = 8.dp,
+                    bottom = 8.dp,
+                    end = 8.dp
+                )
                 .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                name,
-                fontSize = 32.sp
-            )
-            Text(
-                userId,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                bio,
-                Modifier
-                    .padding(
-                        start = 8.dp,
-                        bottom = 8.dp,
-                        end = 8.dp
-                    )
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-        }
+            textAlign = TextAlign.Center
+        )
     }
 }
 
