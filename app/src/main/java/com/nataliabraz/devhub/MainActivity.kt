@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.nataliabraz.devhub.ui.theme.DevHubTheme
 
 private const val personNameMock = "Natalia"
@@ -93,8 +94,8 @@ fun Header(boxHeight: Dp, imageHeight: Dp) {
             )
             .height(boxHeight)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.user_avatar),
+        AsyncImage(
+            model = "https://avatars.githubusercontent.com/u/18318587?v=4",
             contentDescription = stringResource(id = R.string.user_image_content_description),
             Modifier
                 .offset(y = imageHeight / 2)
