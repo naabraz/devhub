@@ -1,6 +1,7 @@
 package com.nataliabraz.devhub
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,8 +35,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
 import com.nataliabraz.devhub.ui.theme.DevHubTheme
+import com.nataliabraz.devhub.webclient.RetrofitLauncher
+import com.nataliabraz.devhub.webclient.service.GithubService
+import kotlinx.coroutines.launch
 
 private const val personNameMock = "Natalia"
 private const val personUserIdMock = "naabraz"
@@ -44,7 +49,15 @@ private const val personBioMock = "My bio"
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            val githubService: GithubService = RetrofitLauncher().githubService
+            val data = githubService.getProfile("naabraz")
+            Log.i("MainActivity", "onCreate: $data")
+        }
+
         enableEdgeToEdge()
+
         setContent {
             DevHubTheme {
                 Surface(
