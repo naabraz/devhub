@@ -16,5 +16,5 @@ class RetrofitLauncher {
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 
-    val githubService get() = retrofit.create(GithubService::class.java)
+    val githubService: GithubService get() = retrofit.create(GithubService::class.java)
 }

@@ -1,11 +1,9 @@
 package com.nataliabraz.devhub
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,12 +20,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,40 +34,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.lifecycleScope
 import coil.compose.AsyncImage
 import com.nataliabraz.devhub.ui.theme.DevHubTheme
-import com.nataliabraz.devhub.webclient.RetrofitLauncher
-import com.nataliabraz.devhub.webclient.service.GithubService
-import kotlinx.coroutines.launch
+import com.nataliabraz.devhub.webclient.GithubWebClient
 
-private const val personNameMock = "Natalia"
-private const val personUserIdMock = "naabraz"
-private const val personBioMock = "My bio"
-
+private val USER = "naabraz"
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            val githubService: GithubService = RetrofitLauncher().githubService
-            val data = githubService.getProfile("naabraz")
-            Log.i("MainActivity", "onCreate: $data")
-        }
-
         enableEdgeToEdge()
-
         setContent {
             DevHubTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PersonInfo(
-                        personNameMock,
-                        personUserIdMock,
-                        personBioMock
-                    )
+                    PersonInfo(USER)
                 }
             }
         }
@@ -76,7 +57,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PersonInfo(name: String, userId: String, bio: String) {
+fun PersonInfo(id: String) {
+    val webClient = GithubWebClient()
+    val data = webClient.getUserProfile(id)
+    val state by data.collectAsState(initial = null)
+
     Column {
         val boxHeight = remember {
             150.dp
@@ -85,16 +70,16 @@ fun PersonInfo(name: String, userId: String, bio: String) {
             boxHeight
         }
 
-        Header(boxHeight, imageHeight)
+        state?.let { Header(it.avatar, boxHeight, imageHeight) }
 
         Spacer(Modifier.height(imageHeight / 2))
 
-        Profile(name, userId, bio)
+        state?.let { Profile(it.name, it.login, it.bio) }
     }
 }
 
 @Composable
-fun Header(boxHeight: Dp, imageHeight: Dp) {
+fun Header(avatarUrl: String, boxHeight: Dp, imageHeight: Dp) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -108,7 +93,7 @@ fun Header(boxHeight: Dp, imageHeight: Dp) {
             .height(boxHeight)
     ) {
         AsyncImage(
-            model = "https://avatars.githubusercontent.com/u/18318587?v=4",
+            model = avatarUrl,
             contentDescription = stringResource(id = R.string.user_image_content_description),
             Modifier
                 .offset(y = imageHeight / 2)
@@ -154,10 +139,6 @@ fun Profile(name: String, userId: String, bio: String) {
 @Composable
 fun GreetingPreview() {
     DevHubTheme {
-        PersonInfo(
-            personNameMock,
-            personUserIdMock,
-            personBioMock
-        )
+        PersonInfo(USER)
     }
 }
