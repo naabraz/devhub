@@ -59,23 +59,25 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun PersonInfo(id: String) {
     val webClient = GithubWebClient()
-    val data = webClient.getUserProfile(id)
-    val state by data.collectAsState(initial = null)
+    val user by webClient.getUserProfile(id).collectAsState(initial = null)
 
-    Column {
-        val boxHeight = remember {
-            150.dp
+    user?.let {
+        Column {
+            val boxHeight = remember {
+                150.dp
+            }
+            val imageHeight = remember {
+                boxHeight
+            }
+
+            Header(it.avatar, boxHeight, imageHeight)
+
+            Spacer(Modifier.height(imageHeight / 2))
+
+            Profile(it.name, it.login, it.bio)
         }
-        val imageHeight = remember {
-            boxHeight
-        }
-
-        state?.let { Header(it.avatar, boxHeight, imageHeight) }
-
-        Spacer(Modifier.height(imageHeight / 2))
-
-        state?.let { Profile(it.name, it.login, it.bio) }
     }
+
 }
 
 @Composable
