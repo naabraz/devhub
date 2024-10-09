@@ -9,4 +9,8 @@ class GithubWebClient {
     fun getUserProfile(id: String) = flow {
         emit(githubService.getProfile(id))
     }
+
+    fun getUserRepositories(id: String) = flow {
+        emit(githubService.getRepositories(id))
+    }
 }
