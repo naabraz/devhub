@@ -1,4 +1,4 @@
-package com.nataliabraz.devhub.ui.theme.components
+package com.nataliabraz.devhub.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,7 @@ import coil.compose.AsyncImage
 import com.nataliabraz.devhub.R
 
 @Composable
-fun Header(avatarUrl: String, boxHeight: Dp, imageHeight: Dp) {
+fun ProfileHeader(avatarUrl: String, boxHeight: Dp, imageHeight: Dp) {
     Box(
         Modifier
             .fillMaxWidth()

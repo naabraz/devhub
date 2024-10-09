@@ -1,4 +1,4 @@
-package com.nataliabraz.devhub.ui.theme.components
+package com.nataliabraz.devhub.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Profile(name: String, userId: String, bio: String) {
+fun ProfileInfo (name: String, userId: String, bio: String) {
     Column(
         Modifier
             .padding(8.dp)

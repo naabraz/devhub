@@ -11,7 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.nataliabraz.devhub.ui.theme.DevHubTheme
-import com.nataliabraz.devhub.ui.theme.screens.PersonInfo
+import com.nataliabraz.devhub.ui.components.Profile
+import com.nataliabraz.devhub.ui.screens.ProfileScreen
+import com.nataliabraz.devhub.ui.state.ProfileUIState
+import com.nataliabraz.devhub.webclient.GithubWebClient
 
 private val USER = "naabraz"
 
@@ -25,7 +28,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    PersonInfo(USER)
+                    ProfileScreen(
+                        USER,
+                        GithubWebClient()
+                    )
                 }
             }
         }
@@ -36,6 +42,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GreetingPreview() {
     DevHubTheme {
-        PersonInfo(USER)
+        Profile(
+                user = ProfileUIState(
+                name = "Foo",
+                bio = "Foo bio",
+                user = "foo",
+                image = ""
+            )
+        )
     }
 }
