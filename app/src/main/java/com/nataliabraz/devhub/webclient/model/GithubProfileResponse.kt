@@ -1,5 +1,6 @@
 package com.nataliabraz.devhub.webclient.model
 
+import com.nataliabraz.devhub.ui.state.ProfileUIState
 import com.squareup.moshi.Json
 
 data class GithubProfileResponse(
@@ -8,4 +9,11 @@ data class GithubProfileResponse(
     val avatar: String,
     val name: String,
     val bio: String
+)
+
+fun GithubProfileResponse.toProfileUIState() = ProfileUIState(
+    user = login,
+    image = avatar,
+    name = name,
+    bio = bio
 )

@@ -48,8 +48,8 @@ fun Repository(repo: RepositoryUIState) {
 fun RepositoryPreview() {
     Repository(
         repo = RepositoryUIState(
-            name = "alexfelipe",
-            description = "my personal information"
+            name = "foo",
+            description = "foo personal information"
         )
     )
 }
