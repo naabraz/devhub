@@ -19,7 +19,9 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
-    var userId by remember { mutableStateOf("") }
+    var userId by remember {
+        mutableStateOf("")
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

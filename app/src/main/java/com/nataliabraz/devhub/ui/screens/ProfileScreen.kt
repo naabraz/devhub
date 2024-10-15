@@ -10,9 +10,14 @@ import com.nataliabraz.devhub.webclient.GithubWebClient
 
 @Composable
 fun ProfileScreen(
-    id: String, webClient: GithubWebClient
+    id: String,
+    webClient: GithubWebClient
 ) {
-    val uiState by remember { derivedStateOf { webClient.uiState } }
+    val uiState by remember {
+        derivedStateOf {
+            webClient.uiState
+        }
+    }
 
     LaunchedEffect(null) {
         webClient.getUserProfile(id)

@@ -29,19 +29,29 @@ class MainActivity : ComponentActivity() {
         setContent {
             DevHubTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = "LoginScreen") {
-                        composable("LoginScreen") { LoginScreen(navController) }
+                    NavHost(
+                        navController = navController,
+                        startDestination = "LoginScreen"
+                    ) {
+                        composable("LoginScreen") {
+                            LoginScreen(navController)
+                        }
                         composable(
                             route = "ProfileScreen/{id}",
-                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                            arguments = listOf(navArgument("id") {
+                                type = NavType.StringType
+                            })
                         ) { backStackEntry ->
-                            ProfileScreen(
-                                id = backStackEntry.arguments?.getString("id") ?: "",
-                                GithubWebClient()
-                            )
+                            backStackEntry.arguments?.getString("id")?.let {
+                                ProfileScreen(
+                                    id = it,
+                                    GithubWebClient()
+                                )
+                            }
                         }
                     }
                 }
@@ -56,7 +66,10 @@ fun GreetingPreview() {
     DevHubTheme {
         Profile(
             user = ProfileUIState(
-                name = "Foo", bio = "Foo bio", user = "foo", image = ""
+                name = "Foo",
+                bio = "Foo bio",
+                user = "foo",
+                image = ""
             )
         )
     }
