@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
-    var text by remember { mutableStateOf("") }
+    var userId by remember { mutableStateOf("") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -31,15 +31,18 @@ fun LoginScreen(navController: NavHostController) {
             fontSize = 32.sp
         )
         TextField(
-            value = text,
+            value = userId,
             onValueChange = {
-                text = it
+                userId = it
             },
             label = {
                 Text("User")
             }
         )
-        Button(onClick = { navController.navigate("ProfileScreen/${text}") }) {
+        Button(
+            onClick = { navController.navigate("ProfileScreen/${userId}") },
+            enabled = userId.isNotBlank() && userId.isNotEmpty()
+        ) {
             Text("Enter")
         }
     }
