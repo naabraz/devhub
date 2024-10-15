@@ -10,13 +10,17 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.nataliabraz.devhub.ui.theme.DevHubTheme
 import com.nataliabraz.devhub.ui.components.Profile
+import com.nataliabraz.devhub.ui.screens.LoginScreen
 import com.nataliabraz.devhub.ui.screens.ProfileScreen
 import com.nataliabraz.devhub.ui.state.ProfileUIState
 import com.nataliabraz.devhub.webclient.GithubWebClient
-
-private val USER = "naabraz"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,13 +29,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             DevHubTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    ProfileScreen(
-                        USER,
-                        GithubWebClient()
-                    )
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = "LoginScreen") {
+                        composable("LoginScreen") { LoginScreen(navController) }
+                        composable(
+                            route = "ProfileScreen/{id}",
+                            arguments = listOf(navArgument("id") { type = NavType.StringType })
+                        ) { backStackEntry ->
+                            ProfileScreen(
+                                id = backStackEntry.arguments?.getString("id") ?: "",
+                                GithubWebClient()
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -43,11 +55,8 @@ class MainActivity : ComponentActivity() {
 fun GreetingPreview() {
     DevHubTheme {
         Profile(
-                user = ProfileUIState(
-                name = "Foo",
-                bio = "Foo bio",
-                user = "foo",
-                image = ""
+            user = ProfileUIState(
+                name = "Foo", bio = "Foo bio", user = "foo", image = ""
             )
         )
     }

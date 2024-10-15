@@ -20,6 +20,7 @@ class GithubWebClient {
             val profile = githubService.getProfile(id).toProfileUIState()
             val repositories = githubService.getRepositories(id).map { it.toGithubRepository() }
             uiState = profile.copy(repositories = repositories)
+            Log.i("getUserProfile", "getUserProfile: $uiState")
         } catch (e: Exception) {
             Log.e("GitHubWebClient", "findProfileBy: falha ao buscar usuário", e)
         }
